@@ -831,11 +831,17 @@ GEOGRAPHIC RULES
 • Sequence to minimise travel and backtracking
 • SLA / Urgent jobs override geographic preference
 
+AVAILABILITY
+════════════
+• ALL three technicians (David, Karl, and Josh) are available and working today unless the task data explicitly states otherwise
+• NEVER assume, infer, or hallucinate that a technician is unavailable, on leave, or absent — if no absence is noted in the data, they are available and must be considered for scheduling
+• Do not add notes suggesting a technician "may be unavailable" or similar — only use confirmed information from the task export
+
 WORKLOAD
 ════════
 • Max 6 jobs per tech per day
 • Max 30 min travel between consecutive jobs
-• Overflow to Unassigned if workload exceeded
+• Overflow to Unassigned if workload exceeded — the only valid reasons for Unassigned are: missing/incorrect skill tag, skill mismatch, specialist site restriction, or all eligible techs at 6-job maximum
 
 PRIORITY ORDER: SLA → Urgent → High → Normal
 SLA and Urgent always scheduled first.
