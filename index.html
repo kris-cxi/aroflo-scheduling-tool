@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CXI — Aroflo Scheduling Assistant</title>
+<title>CXI — Scheduling Assistant</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
@@ -774,23 +774,30 @@ TECHNICIAN PROFILES
 
 DAVID — Senior Technician (ADVANCED level)
 • Highest experience — first choice for all complex, specialist or high-stakes jobs
-• Training Levels: Integriti Advanced, GX Certification, Advanced Tecom Challenger, all basic and intermediate training
-• Skills: Inner Range Inception, Inner Range Integriti (advanced), Intercoms (all), CCTV (all), NX Witness, Protégé WX, Protégé GX, QPRC / Queanbeyan Palerang Regional Council sites, complex troubleshooting
-• Certifications: Integriti Advanced, NCH (North Canberra Hospital), TCH (The Canberra Hospital)
+• EACS: Inner Range Inception (Competent), Inner Range Integriti (Competent), Protégé WX (Basic), Tecom (Competent)
+• CCTV: Hikvision, Avigilon, NX Witness
+• Intercoms: Aiphone, Hikvision
+• Troubleshooting: Competent  |  Installation: Competent
+• Special access: QPRC / Queanbeyan Palerang Regional Council sites, NCH (North Canberra Hospital), TCH (The Canberra Hospital)
+• Sign-off status: Pending
 • Zone preference: ACT North Side  |  Hours: 08:00–16:30
 
 KARL — Intermediate Technician (INTERMEDIATE level)
 • Good with most things — suitable for standard and moderately complex jobs
-• Training Levels: Integriti Basic/Level 1, Basic GX knowledge, sound general security training, all basic training
-• Skills: Inner Range Inception, Inner Range Integriti (basic), Intercoms (all), CCTV (all), NX Witness, Protégé WX, Protégé GX (basic), standard troubleshooting
-• Certifications: Integriti Base Level
+• EACS: Inner Range Inception (Competent), Inner Range Integriti (Competent), Protégé WX (Competent), Protégé GX (Competent), Tecom (Basic), Ajax (Basic)
+• CCTV: NX Witness, Hikvision, Hanwha, Milesight, Avigilon
+• Intercoms: Aiphone, Comelit, Akuvox, Bticino, Fermax, Hikvision, Dahua
+• Troubleshooting: Competent  |  Installation: Basic
+• Sign-off status: Approved
 • Zone: ACT  |  Hours: 08:00–16:30
 
 JOSH — Junior Technician (EASY level)
 • Entry level knowledge — basic tasks only
-• Training Levels: Inception Level 1, Protégé WX Level 1, Basic Tecom Challenger training
-• Skills: Inner Range Inception (basic), Hikvision CCTV (basic), basic CCTV, NX Witness (basic), cabling, installation, basic troubleshooting
-• Certifications: Inner Range Inception, Protégé WX, NCH and TCH site access
+• EACS: Inner Range Inception (Competent), Protégé WX (Competent), Tecom (Basic), Ajax (Basic), C-CURE (Basic)
+• CCTV: NX Witness, Hikvision, Avigilon
+• Intercoms: Aiphone
+• Troubleshooting: Basic  |  Installation: Competent
+• Special access: NCH (North Canberra Hospital), TCH (The Canberra Hospital)
 • Zone: ACT  |  Hours: 08:00–16:30
 
 TAG-BASED ASSIGNMENT (PRIMARY RULE)
@@ -807,19 +814,19 @@ Tags are case-insensitive (easy, Easy, EASY all work).
 SPECIALIST SITE / SYSTEM RULES (apply after tag check)
 ══════════════════════════════════════════════════════
 These override tag assignments when specified:
-• Integriti jobs → David or Karl only (never Josh, even if tagged Easy)
+• Integriti jobs → David or Karl (both Competent; prefer Karl to save David for Advanced tasks)
 • Advanced CCTV installs → David or Karl only
-• Protégé GX → Karl or David only (never Josh)
+• Protégé GX → Karl or David (both Competent; prefer Karl to save David for Advanced tasks)
 • QPRC / Queanbeyan Palerang Regional Council sites → David only
 • NCH (North Canberra Hospital) → David or Josh only
 • TCH (The Canberra Hospital) → David or Josh only
-• Intercoms → David or Karl only (Josh not qualified for intercom work)
+• Intercoms → David or Karl only (Josh only qualified for Aiphone; flag if non-Aiphone intercom job assigned to Josh)
 • Complex troubleshooting → David first, Karl second, never Josh
 • If specialist rule conflicts with tag, follow specialist rule and add note explaining override
 
 GEOGRAPHIC RULES
 ════════════════
-• David, Karl & Josh finish on ACT North Side where possible
+• David finishes on ACT North Side where possible
 • Group each tech's jobs in geographic clusters (5–10 km radius)
 • Sequence to minimise travel and backtracking
 • SLA / Urgent jobs override geographic preference
@@ -827,11 +834,11 @@ GEOGRAPHIC RULES
 WORKLOAD
 ════════
 • Max 6 jobs per tech per day
-• Max 30 min travel between consecutive jobs unless the task is in NSW then allow 1hr travel
+• Max 30 min travel between consecutive jobs
 • Overflow to Unassigned if workload exceeded
 
-PRIORITY ORDER: SLA → High → Medium → Standard
-SLA and High always scheduled first.
+PRIORITY ORDER: SLA → Urgent → High → Normal
+SLA and Urgent always scheduled first.
 
 UNASSIGNED REASONS - Be specific:
 • "Missing skill level tag - please add Easy, Intermediate or Advanced tag in AroFlo"
