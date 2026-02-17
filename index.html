@@ -69,39 +69,11 @@
     gap: 14px;
   }
 
-  /* Logo mark matching CXI style */
-  .logo-mark {
-    width: 36px;
-    height: 36px;
-    background: var(--navy);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .logo-mark svg { display: block; }
-
-  .logo-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-  }
-
-  .logo-text .l1 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: 0.5px;
-  }
-
-  .logo-text .l2 {
-    font-size: 9.5px;
-    font-weight: 500;
-    color: var(--text-light);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+  /* CXI Logo Image */
+  .cxi-logo-img {
+    height: 32px;
+    width: auto;
+    display: block;
   }
 
   .nav-pipe {
@@ -532,6 +504,43 @@
   .p-sla    { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bd); }
   .p-normal { background: var(--off-white); color: var(--text-light); border: 1px solid var(--border); }
 
+  /* ── Tag pills ── */
+  .tag-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .tag-easy   { background: #e8f5f0; color: #1a7a50; border: 1px solid #b2dece; }
+  .tag-int    { background: #e6f0ff; color: #0066b3; border: 1px solid #b3d7ff; }
+  .tag-adv    { background: #f0e6f5; color: #6d3fa0; border: 1px solid #d4b8e5; }
+  .tag-miss   { background: #fff4f0; color: #b94a1a; border: 1px solid #f5c4a8; }
+
+  /* ── Missing tags warning ── */
+  .warn-box {
+    background: #fff8f4;
+    border: 1.5px solid var(--orange);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .warn-box.show { display: flex; }
+  .warn-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .warn-text { flex: 1; line-height: 1.6; }
+  .warn-text strong { color: var(--orange); font-weight: 700; }
+
   /* ── Footer ── */
   footer {
     background: var(--navy-dark);
@@ -595,17 +604,7 @@
 
 <nav>
   <div class="nav-brand">
-    <div class="logo-mark">
-      <!-- Simple CXI shield icon in navy box -->
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M11 2L4 5v6c0 4.1 2.97 7.93 7 8.93C15.03 18.93 18 15.1 18 11V5L11 2z" fill="#e8631a"/>
-        <text x="11" y="15" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="8" fill="white" letter-spacing="0.5">CXI</text>
-      </svg>
-    </div>
-    <div class="logo-text">
-      <span class="l1">CXI</span>
-      <span class="l2">Control by Integration</span>
-    </div>
+    <img src="https://images.squarespace-cdn.com/content/v1/665be9fb45085e3efc5b7e65/8a76166b-4823-47ce-8f9d-79e123ba3341/CXI_Logo__Full_RGB_Print-cropped.png?format=300w" alt="CXI - Control by Integration" class="cxi-logo-img" />
     <div class="nav-pipe"></div>
     <span class="nav-pagetitle">Scheduling Assistant</span>
   </div>
@@ -676,6 +675,12 @@
         <div class="results-meta" id="rMeta"></div>
       </div>
       <button class="btn-copy-all" onclick="copyAll()">📋 Copy All</button>
+    </div>
+    <div class="warn-box" id="warnBox">
+      <span class="warn-icon">⚠️</span>
+      <div class="warn-text">
+        <strong id="warnCount"></strong> <span id="warnMsg"></span>
+      </div>
     </div>
     <div id="cards"></div>
   </div>
@@ -767,44 +772,50 @@ async function generate() {
 TECHNICIAN PROFILES
 ═══════════════════
 
-DAVID — Senior Technician (highest experience)
-• Knows almost everything — first choice for all complex, specialist or high-stakes jobs
-• Skills: Inner Range Inception, Inner Range Integriti (advanced), Intercoms (all), CCTV (all), NX Witness, Protégé WX, QPRC / Queanbeyan Palerang Regional Council sites, complex troubleshooting
+DAVID — Senior Technician (ADVANCED level)
+• Highest experience — first choice for all complex, specialist or high-stakes jobs
+• Training Levels: Integriti Advanced, GX Certification, Advanced Tecom Challenger, all basic and intermediate training
+• Skills: Inner Range Inception, Inner Range Integriti (advanced), Intercoms (all), CCTV (all), NX Witness, Protégé WX, Protégé GX, QPRC / Queanbeyan Palerang Regional Council sites, complex troubleshooting
 • Certifications: Integriti Advanced, NCH (North Canberra Hospital), TCH (The Canberra Hospital)
 • Zone preference: ACT North Side  |  Hours: 08:00–16:30
 
-KARL — Intermediate Technician
+KARL — Intermediate Technician (INTERMEDIATE level)
 • Good with most things — suitable for standard and moderately complex jobs
-• Skills: Inner Range Inception, Inner Range Integriti, Intercoms (all), CCTV (all), NX Witness, Protégé WX, Protégé GX, standard troubleshooting
+• Training Levels: Integriti Basic/Level 1, Basic GX knowledge, sound general security training, all basic training
+• Skills: Inner Range Inception, Inner Range Integriti (basic), Intercoms (all), CCTV (all), NX Witness, Protégé WX, Protégé GX (basic), standard troubleshooting
 • Certifications: Integriti Base Level
 • Zone: ACT  |  Hours: 08:00–16:30
 
-JOSH — Junior Technician (least experienced)
-• Basic tasks only — do NOT assign complex or specialist work to Josh
-• Skills: Inner Range Inception, Hikvision CCTV (basic), basic CCTV, NX Witness (basic), cabling, installation, basic troubleshooting
+JOSH — Junior Technician (EASY level)
+• Entry level knowledge — basic tasks only
+• Training Levels: Inception Level 1, Protégé WX Level 1, Basic Tecom Challenger training
+• Skills: Inner Range Inception (basic), Hikvision CCTV (basic), basic CCTV, NX Witness (basic), cabling, installation, basic troubleshooting
 • Certifications: Inner Range Inception, Protégé WX, NCH and TCH site access
 • Zone: ACT  |  Hours: 08:00–16:30
 
-ASSIGNMENT RULES
-════════════════
-• Integriti jobs → David or Karl only (David preferred for advanced)
-• Advanced CCTV → David or Karl only
-• Protégé GX → Karl only
-• QPRC / Queanbeyan Palerang Regional Council → David only
+TAG-BASED ASSIGNMENT (PRIMARY RULE)
+════════════════════════════════════
+Each task has a "tags" column. The tag determines which techs are qualified:
+
+• "Easy" tag → Josh, Karl, or David can do it (prefer Josh to free up senior techs)
+• "Intermediate" tag → Karl or David can do it (prefer Karl to save David for advanced)
+• "Advanced" tag → David ONLY
+• NO TAG or BLANK tags field → DO NOT ASSIGN. Place in Unassigned with reason "Missing skill level tag - please add Easy, Intermediate or Advanced tag in AroFlo"
+
+Tags are case-insensitive (easy, Easy, EASY all work).
+
+SPECIALIST SITE / SYSTEM RULES (apply after tag check)
+══════════════════════════════════════════════════════
+These override tag assignments when specified:
+• Integriti jobs → David or Karl only (never Josh, even if tagged Easy)
+• Advanced CCTV installs → David or Karl only
+• Protégé GX → Karl or David only (never Josh)
+• QPRC / Queanbeyan Palerang Regional Council sites → David only
 • NCH (North Canberra Hospital) → David or Josh only
 • TCH (The Canberra Hospital) → David or Josh only
-• Intercoms → David or Karl only (Josh not qualified)
+• Intercoms → David or Karl only (Josh not qualified for intercom work)
 • Complex troubleshooting → David first, Karl second, never Josh
-• Basic cabling / installation → any tech including Josh
-• Basic CCTV footage review → any tech including Josh
-• Never assign a job above a tech's experience level
-• If no qualified tech available → Unassigned with reason
-
-EXPERIENCE MATCHING
-═══════════════════
-• David: complex, multi-system, specialist, senior troubleshooting
-• Karl: standard installs, single systems, intermediate troubleshooting
-• Josh: basic tasks, cabling, simple installs only
+• If specialist rule conflicts with tag, follow specialist rule and add note explaining override
 
 GEOGRAPHIC RULES
 ════════════════
@@ -822,11 +833,18 @@ WORKLOAD
 PRIORITY ORDER: SLA → Urgent → High → Normal
 SLA and Urgent always scheduled first.
 
+UNASSIGNED REASONS - Be specific:
+• "Missing skill level tag - please add Easy, Intermediate or Advanced tag in AroFlo"
+• "Requires Advanced level - only David qualified but workload full"
+• "Integriti work requires David or Karl but both at capacity"
+• etc.
+
 OUTPUT: Reply with raw JSON only. No markdown, no explanation.
 
 {
   "scheduleDate": "string",
   "summary": "brief one-line summary",
+  "missingTagCount": 0,
   "technicians": [
     {
       "name": "David",
@@ -839,6 +857,7 @@ OUTPUT: Reply with raw JSON only. No markdown, no explanation.
           "location": "string",
           "description": "string",
           "priority": "Urgent|High|SLA|Normal",
+          "tag": "Easy|Intermediate|Advanced",
           "estimatedDuration": "string",
           "notes": "string"
         }
@@ -846,10 +865,13 @@ OUTPUT: Reply with raw JSON only. No markdown, no explanation.
     }
   ],
   "unassigned": [
-    { "taskId": "string", "client": "string", "location": "string", "description": "string", "reason": "string" }
+    { "taskId": "string", "client": "string", "location": "string", "description": "string", "tag": "string or empty", "reason": "string" }
   ]
 }
-Only include technicians with at least one job. Always include unassigned array (empty if none).`;
+
+Include "missingTagCount" at top level showing number of tasks with missing/blank tags.
+Only include technicians with at least one job. Always include unassigned array (empty if none).
+`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -894,6 +916,17 @@ function render(s, dl) {
   const unlen = (s.unassigned||[]).length;
   document.getElementById('rMeta').textContent = `${dl}  ·  ${total} job${total!==1?'s':''} assigned  ·  ${unlen} unassigned`;
 
+  // Show missing tag warning if any
+  const missCount = s.missingTagCount || 0;
+  const warnBox = document.getElementById('warnBox');
+  if (missCount > 0) {
+    warnBox.classList.add('show');
+    document.getElementById('warnCount').textContent = `${missCount} task${missCount!==1?'s':''} missing tags!`;
+    document.getElementById('warnMsg').textContent = 'These tasks could not be assigned. Please add Easy, Intermediate, or Advanced tags in AroFlo and regenerate the schedule.';
+  } else {
+    warnBox.classList.remove('show');
+  }
+
   const wrap = document.getElementById('cards');
   wrap.innerHTML = '';
 
@@ -907,11 +940,14 @@ function render(s, dl) {
     const m = TM[tech.name]||{cls:'karl',av:'av-karl',role:''};
     const rows = tech.jobs.map(j => {
       const pc = {Urgent:'p-urgent',High:'p-high',SLA:'p-sla',Normal:'p-normal'}[j.priority]||'p-normal';
+      const tc = {Easy:'tag-easy',Intermediate:'tag-int',Advanced:'tag-adv'}[j.tag]||'tag-miss';
+      const tagText = j.tag || 'Missing';
       return `<tr>
         <td><span class="seq">${j.order}</span></td>
         <td><div class="cp">${x(j.taskId)}</div><div class="cs">${x(j.estimatedDuration)}</div></td>
         <td><div class="cp">${x(j.client)}</div><div class="cs">${x(j.location)}</div></td>
         <td>${x(j.description)}</td>
+        <td><span class="tag-pill ${tc}">${x(tagText)}</span></td>
         <td><span class="pill ${pc}">${x(j.priority||'Normal')}</span></td>
         <td class="cs">${x(j.notes||'—')}</td>
       </tr>`;
@@ -930,19 +966,24 @@ function render(s, dl) {
         <button class="btn-cp" onclick="copyCard('${x(tech.name)}')">📋 Copy</button>
       </div>
       <div class="tscroll"><table>
-        <thead><tr><th>#</th><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Priority</th><th>Notes</th></tr></thead>
+        <thead><tr><th>#</th><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Tag</th><th>Priority</th><th>Notes</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>`;
     wrap.appendChild(el);
   });
 
   if (s.unassigned?.length) {
-    const rows = s.unassigned.map(j=>`<tr>
+    const rows = s.unassigned.map(j=>{
+      const tc = {Easy:'tag-easy',Intermediate:'tag-int',Advanced:'tag-adv'}[j.tag]||'tag-miss';
+      const tagText = j.tag || 'Missing';
+      return `<tr>
       <td><div class="cp">${x(j.taskId)}</div></td>
       <td><div class="cp">${x(j.client)}</div><div class="cs">${x(j.location)}</div></td>
       <td>${x(j.description)}</td>
+      <td><span class="tag-pill ${tc}">${x(tagText)}</span></td>
       <td style="color:var(--orange);font-size:13px">${x(j.reason)}</td>
-    </tr>`).join('');
+    </tr>`;
+    }).join('');
     const el = document.createElement('div');
     el.className = 'scard';
     el.innerHTML = `
@@ -956,7 +997,7 @@ function render(s, dl) {
         <button class="btn-cp" onclick="copyCard('Unassigned')">📋 Copy</button>
       </div>
       <div class="tscroll"><table>
-        <thead><tr><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Reason Unassigned</th></tr></thead>
+        <thead><tr><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Tag</th><th>Reason Unassigned</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>`;
     wrap.appendChild(el);
@@ -973,14 +1014,14 @@ function buildRaw(s, dl) {
   let t = `CXI SCHEDULE — ${dl}\n${'═'.repeat(60)}\n\n`;
   (s.technicians||[]).forEach(tech => {
     t += `${tech.name.toUpperCase()} — ${tech.role||''}\n${'─'.repeat(40)}\n`;
-    t += `#\tTask ID\tClient\tLocation\tDescription\tPriority\tNotes\n`;
-    tech.jobs.forEach(j => t += `${j.order}\t${j.taskId||''}\t${j.client||''}\t${j.location||''}\t${j.description||''}\t${j.priority||''}\t${j.notes||''}\n`);
+    t += `#\tTask ID\tClient\tLocation\tDescription\tTag\tPriority\tNotes\n`;
+    tech.jobs.forEach(j => t += `${j.order}\t${j.taskId||''}\t${j.client||''}\t${j.location||''}\t${j.description||''}\t${j.tag||'Missing'}\t${j.priority||''}\t${j.notes||''}\n`);
     t += '\n';
   });
   if (s.unassigned?.length) {
     t += `UNASSIGNED\n${'─'.repeat(40)}\n`;
-    t += `Task ID\tClient\tLocation\tDescription\tReason\n`;
-    s.unassigned.forEach(j => t += `${j.taskId||''}\t${j.client||''}\t${j.location||''}\t${j.description||''}\t${j.reason||''}\n`);
+    t += `Task ID\tClient\tLocation\tDescription\tTag\tReason\n`;
+    s.unassigned.forEach(j => t += `${j.taskId||''}\t${j.client||''}\t${j.location||''}\t${j.description||''}\t${j.tag||'Missing'}\t${j.reason||''}\n`);
   }
   document.getElementById('rawOut').textContent = t;
 }
