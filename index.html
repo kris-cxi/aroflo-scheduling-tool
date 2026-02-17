@@ -3,220 +3,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CXI Scheduling Assistant</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>CXI — Scheduling Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0f14;
-    --surface: #13161d;
-    --surface2: #1a1e28;
-    --border: #252a38;
-    --accent: #00e5a0;
-    --accent2: #0085ff;
-    --warn: #ff6b35;
-    --text: #e8eaf0;
-    --muted: #6b7280;
-    --karl: #00e5a0;
-    --josh: #0085ff;
-    --david: #a855f7;
-    --unassigned: #ff6b35;
-  }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:      #e8631a;
+    --orange-dark: #c9530e;
+    --navy:        #1c2640;
+    --navy-dark:   #141c30;
+    --white:       #ffffff;
+    --off-white:   #f7f8fa;
+    --border:      #e4e7ef;
+    --text:        #1c2640;
+    --text-mid:    #4a5268;
+    --text-light:  #8a91a8;
+    --success:     #1a7a50;
+    --success-bg:  #edf7f2;
+    --success-bd:  #b2dece;
+    --david:       #1c2640;
+    --karl:        #0066b3;
+    --josh:        #5a7fa8;
+    --unassigned:  #e8631a;
+  }
 
   body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
     color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
-  /* Animated background grid */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
+  /* ── Announcement bar ── */
+  .announce {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    font-size: 12px;
+    padding: 6px 16px;
+    letter-spacing: 0.2px;
   }
+  .announce b { color: var(--orange); font-weight: 600; }
 
-  .container {
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 40px 24px;
-  }
-
-  /* Header */
-  header {
+  /* ── Nav ── */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    height: 66px;
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 48px;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
 
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* Logo mark matching CXI style */
   .logo-mark {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    background: var(--navy);
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    font-weight: 800;
-    color: #0d0f14;
     flex-shrink: 0;
-    letter-spacing: -1px;
   }
 
-  .header-text h1 {
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    line-height: 1;
+  .logo-mark svg { display: block; }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
   }
 
-  .header-text p {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 4px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .badge {
-    margin-left: auto;
-    background: rgba(0,229,160,0.1);
-    border: 1px solid rgba(0,229,160,0.25);
-    color: var(--accent);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 20px;
+  .logo-text .l1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
     letter-spacing: 0.5px;
   }
 
-  /* API Key Section */
-  .api-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-  }
-
-  .section-label {
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
+  .logo-text .l2 {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--text-light);
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    margin-bottom: 12px;
   }
 
-  .api-row {
+  .nav-pipe {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  .nav-pagetitle {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-mid);
+  }
+
+  .nav-right {
     display: flex;
-    gap: 10px;
     align-items: center;
+    gap: 20px;
   }
 
-  .api-input {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
+  .nav-phone {
     font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-decoration: none;
+  }
+
+  .nav-btn {
+    height: 36px;
+    padding: 0 18px;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: var(--orange-dark); }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--off-white);
+    border-bottom: 1px solid var(--border);
+    padding: 44px 40px 36px;
+  }
+
+  .hero-inner { max-width: 860px; margin: 0 auto; }
+
+  .hero-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+
+  .hero-h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .hero-p {
+    font-size: 15px;
+    color: var(--text-mid);
+    max-width: 540px;
+    line-height: 1.65;
+  }
+
+  /* ── Content ── */
+  .content {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 36px 40px 80px;
+  }
+
+  /* ── Panel ── */
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 26px 26px 22px;
+    margin-bottom: 20px;
+    background: var(--white);
+  }
+
+  .panel-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  /* ── Inputs ── */
+  .row { display: flex; gap: 10px; align-items: center; }
+
+  .inp {
+    flex: 1;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text);
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
-
-  .api-input:focus {
-    border-color: var(--accent);
+  .inp:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(232,99,26,0.1);
   }
-
-  .api-input::placeholder { color: var(--muted); }
+  .inp::placeholder { color: var(--text-light); }
 
   .btn {
-    padding: 12px 20px;
-    border-radius: 10px;
+    height: 42px;
+    padding: 0 20px;
     border: none;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
-  .btn-save {
-    background: var(--accent);
-    color: #0d0f14;
-  }
+  .btn-primary { background: var(--navy); color: #fff; }
+  .btn-primary:hover { background: #263660; }
 
-  .btn-save:hover { background: #00ffb3; transform: translateY(-1px); }
-
-  .btn-clear {
-    background: var(--surface2);
-    color: var(--muted);
+  .btn-outline {
+    background: transparent;
+    color: var(--text-mid);
     border: 1px solid var(--border);
   }
+  .btn-outline:hover { border-color: var(--text-mid); color: var(--text); }
 
-  .btn-clear:hover { color: var(--warn); border-color: var(--warn); }
-
-  .key-status {
-    margin-top: 10px;
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
+  .key-note {
+    margin-top: 8px;
+    font-size: 12.5px;
     display: flex;
     align-items: center;
     gap: 6px;
+    color: var(--text-light);
   }
+  .key-note.ok { color: var(--success); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-  .key-status.ok { color: var(--accent); }
-  .key-status.missing { color: var(--warn); }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    display: inline-block;
-  }
-
-  /* Upload Section */
-  .upload-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-  }
-
-  .drop-zone {
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 48px 24px;
+  /* ── Drop zone ── */
+  .dropzone {
+    border: 1.5px dashed var(--border);
+    border-radius: 5px;
+    padding: 36px 20px;
     text-align: center;
+    background: var(--off-white);
     cursor: pointer;
-    transition: all 0.2s;
     position: relative;
+    transition: all 0.15s;
   }
-
-  .drop-zone:hover, .drop-zone.drag-over {
-    border-color: var(--accent);
-    background: rgba(0,229,160,0.04);
+  .dropzone:hover, .dropzone.over {
+    border-color: var(--orange);
+    background: #fff8f4;
   }
-
-  .drop-zone input[type=file] {
+  .dropzone input {
     position: absolute;
     inset: 0;
     opacity: 0;
@@ -224,633 +285,552 @@
     width: 100%;
     height: 100%;
   }
+  .dz-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+  .dz-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .dz-hint  { font-size: 12.5px; color: var(--text-light); }
 
-  .drop-icon {
-    font-size: 36px;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .drop-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
-  .drop-sub {
-    font-size: 13px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .file-loaded {
-    background: rgba(0,229,160,0.08);
-    border: 1px solid rgba(0,229,160,0.2);
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-top: 14px;
-    display: flex;
+  .file-chip {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    background: var(--success-bg);
+    border: 1px solid var(--success-bd);
+    border-radius: 4px;
+    padding: 7px 14px;
     font-size: 13px;
-    font-family: 'DM Mono', monospace;
+    margin-top: 12px;
   }
+  .chip-name { color: var(--success); font-weight: 600; }
+  .chip-size { color: var(--text-light); }
 
-  .file-loaded .file-icon { font-size: 18px; }
-  .file-loaded .file-name { color: var(--accent); flex: 1; }
-  .file-loaded .file-size { color: var(--muted); }
-
-  /* Date selector */
   .date-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-top: 16px;
-  }
-
-  .date-label {
-    font-size: 13px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    white-space: nowrap;
-  }
-
-  .date-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 14px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    outline: none;
-    transition: border-color 0.2s;
-    color-scheme: dark;
-  }
-
-  .date-input:focus { border-color: var(--accent); }
-
-  /* Generate Button */
-  .btn-generate {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0d0f14;
-    border: none;
-    border-radius: 12px;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-generate:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,229,160,0.3);
-  }
-
-  .btn-generate:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .btn-generate .spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(13,15,20,0.3);
-    border-top-color: #0d0f14;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-right: 8px;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Status / Progress */
-  .status-bar {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    display: none;
+    margin-top: 14px;
   }
-
-  .status-bar.visible { display: flex; }
-  .status-bar.thinking { border-color: rgba(0,133,255,0.3); color: var(--accent2); }
-  .status-bar.done { border-color: rgba(0,229,160,0.3); color: var(--accent); }
-  .status-bar.error { border-color: rgba(255,107,53,0.3); color: var(--warn); }
-
-  .thinking-dots span {
-    animation: blink 1.4s infinite;
-    opacity: 0;
+  .date-row label { font-size: 13.5px; font-weight: 500; color: var(--text-mid); white-space: nowrap; }
+  .date-row input {
+    height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    color: var(--text);
+    outline: none;
+    color-scheme: light;
+    transition: border-color 0.15s;
   }
-  .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+  .date-row input:focus { border-color: var(--orange); }
 
-  /* Results */
-  #results { display: none; }
-  #results.visible { display: block; }
-
-  .results-header {
+  /* ── Generate ── */
+  .btn-generate {
+    width: 100%;
+    height: 50px;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    transition: all 0.15s;
+    letter-spacing: 0.1px;
+  }
+  .btn-generate:hover:not(:disabled) {
+    background: var(--orange-dark);
+    box-shadow: 0 4px 14px rgba(232,99,26,0.28);
+    transform: translateY(-1px);
+  }
+  .btn-generate:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .spin {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Status ── */
+  .status-bar {
+    border-radius: 5px;
+    padding: 12px 18px;
+    margin-bottom: 22px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .status-bar.show { display: flex; }
+  .status-bar.thinking { background: #f0f4ff; border: 1px solid #c4d0f0; color: #253a90; }
+  .status-bar.done     { background: var(--success-bg); border: 1px solid var(--success-bd); color: var(--success); }
+  .status-bar.error    { background: #fff4f0; border: 1px solid #f5c4a8; color: #b94a1a; }
+
+  /* ── Results ── */
+  #results { display: none; }
+  #results.show { display: block; }
+
+  .results-top {
+    display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
   }
 
-  .results-title {
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
-  }
-
-  .results-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
+  .results-h2 { font-size: 20px; font-weight: 700; color: var(--navy); }
+  .results-meta { font-size: 13px; color: var(--text-light); margin-top: 3px; }
 
   .btn-copy-all {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-family: 'Syne', sans-serif;
+    height: 38px;
+    padding: 0 18px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.15s;
+    white-space: nowrap;
   }
+  .btn-copy-all:hover { background: #263660; }
 
-  .btn-copy-all:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* Tech Cards */
-  .tech-card {
-    background: var(--surface);
+  /* ── Schedule cards ── */
+  .scard {
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 6px;
     margin-bottom: 20px;
     overflow: hidden;
-    animation: slideUp 0.4s ease forwards;
+    animation: up 0.3s ease forwards;
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
+  @keyframes up { to { opacity:1; transform:translateY(0); } }
+  .scard:nth-child(1){ animation-delay:.04s; }
+  .scard:nth-child(2){ animation-delay:.09s; }
+  .scard:nth-child(3){ animation-delay:.14s; }
+  .scard:nth-child(4){ animation-delay:.19s; }
 
-  @keyframes slideUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .tech-card:nth-child(1) { animation-delay: 0.05s; }
-  .tech-card:nth-child(2) { animation-delay: 0.1s; }
-  .tech-card:nth-child(3) { animation-delay: 0.15s; }
-  .tech-card:nth-child(4) { animation-delay: 0.2s; }
-
-  .tech-header {
+  .scard-head {
     padding: 16px 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    background: var(--off-white);
     border-bottom: 1px solid var(--border);
   }
 
-  .tech-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 14px;
-    color: #0d0f14;
-    flex-shrink: 0;
+  .scard-head.david      { border-left: 4px solid var(--david); }
+  .scard-head.karl       { border-left: 4px solid var(--karl);  }
+  .scard-head.josh       { border-left: 4px solid var(--josh);  }
+  .scard-head.unassigned { border-left: 4px solid var(--unassigned); }
+
+  .av {
+    width: 40px; height: 40px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+    color: #fff; flex-shrink: 0;
   }
+  .av-david      { background: var(--david); }
+  .av-karl       { background: var(--karl); }
+  .av-josh       { background: var(--josh); }
+  .av-unassigned { background: var(--unassigned); }
 
-  .avatar-karl { background: var(--karl); }
-  .avatar-josh { background: var(--josh); }
-  .avatar-david { background: var(--david); }
-  .avatar-unassigned { background: var(--unassigned); }
+  .av-meta { flex: 1; }
+  .av-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .av-role { font-size: 12px; color: var(--text-light); margin-top: 1px; }
 
-  .tech-name {
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  .tech-job-count {
-    font-family: 'DM Mono', monospace;
+  .job-count {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 12px;
     font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
+    font-weight: 600;
+    color: var(--text-mid);
   }
 
-  .btn-copy-tech {
-    margin-left: auto;
+  .btn-cp {
     background: transparent;
     border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 12px;
-    border-radius: 7px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    color: var(--text-light);
+    height: 32px;
+    padding: 0 13px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
   }
+  .btn-cp:hover { border-color: var(--navy); color: var(--navy); }
 
-  .btn-copy-tech:hover { border-color: var(--accent); color: var(--accent); }
+  /* ── Table ── */
+  .tscroll { overflow-x: auto; }
 
-  /* Schedule Table */
-  .table-wrap {
-    overflow-x: auto;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  thead tr {
-    background: var(--surface2);
-  }
-
+  thead { background: #fafbfd; }
   thead th {
-    padding: 10px 16px;
+    padding: 9px 18px;
     text-align: left;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
     text-transform: uppercase;
+    color: var(--text-light);
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
   }
 
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
   tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: rgba(255,255,255,0.02); }
+  tbody tr:hover { background: #fafbfd; }
 
-  tbody td {
-    padding: 12px 16px;
-    vertical-align: top;
-    line-height: 1.5;
-  }
+  tbody td { padding: 12px 18px; vertical-align: top; line-height: 1.5; }
 
-  .order-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    background: var(--surface2);
+  .seq {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 25px; height: 25px;
+    border-radius: 4px;
+    background: var(--off-white);
     border: 1px solid var(--border);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--muted);
+    font-size: 12px; font-weight: 700;
+    color: var(--text-mid);
   }
 
-  .priority-badge {
+  .cp { font-weight: 600; color: var(--text); }
+  .cs { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+  .pill {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: 20px;
+    padding: 2px 9px;
+    border-radius: 3px;
     font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    font-weight: 500;
+    font-weight: 600;
     white-space: nowrap;
   }
+  .p-urgent { background: #fff4f0; color: #b94a1a; border: 1px solid #f5c4a8; }
+  .p-high   { background: #fff9e6; color: #9a6800; border: 1px solid #f5df9a; }
+  .p-sla    { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bd); }
+  .p-normal { background: var(--off-white); color: var(--text-light); border: 1px solid var(--border); }
 
-  .priority-urgent {
-    background: rgba(255,107,53,0.15);
-    color: var(--warn);
-    border: 1px solid rgba(255,107,53,0.25);
-  }
-
-  .priority-high {
-    background: rgba(255,193,7,0.12);
-    color: #ffd60a;
-    border: 1px solid rgba(255,193,7,0.2);
-  }
-
-  .priority-normal {
-    background: rgba(107,114,128,0.15);
-    color: var(--muted);
-    border: 1px solid var(--border);
-  }
-
-  .priority-sla {
-    background: rgba(0,229,160,0.12);
-    color: var(--accent);
-    border: 1px solid rgba(0,229,160,0.25);
-  }
-
-  .task-title { font-weight: 600; color: var(--text); }
-  .task-sub { color: var(--muted); font-size: 12px; margin-top: 2px; font-family: 'DM Mono', monospace; }
-
-  /* Raw output for copy */
-  .raw-output {
-    display: none;
-  }
-
-  /* Footer */
+  /* ── Footer ── */
   footer {
-    text-align: center;
-    padding: 32px 0 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    margin-top: 40px;
+    background: var(--navy-dark);
+    padding: 28px 40px;
   }
 
-  footer span { color: var(--accent); }
+  .foot-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 14px;
+  }
 
-  /* Responsive */
-  @media (max-width: 600px) {
-    .api-row { flex-direction: column; }
-    .btn { width: 100%; }
-    .date-row { flex-direction: column; align-items: flex-start; }
+  .foot-brand {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.3px;
+  }
+  .foot-brand span { color: var(--orange); }
+
+  .foot-links { display: flex; gap: 22px; }
+  .foot-links a {
+    color: rgba(255,255,255,0.4);
+    font-size: 12.5px;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .foot-links a:hover { color: rgba(255,255,255,0.75); }
+
+  .foot-bottom {
+    color: rgba(255,255,255,0.25);
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+
+  /* ── Responsive ── */
+  @media(max-width:640px){
+    nav { padding: 0 16px; }
+    .hero { padding: 28px 16px 24px; }
+    .content { padding: 24px 16px 60px; }
+    .panel { padding: 18px 16px; }
+    .row { flex-direction: column; align-items: stretch; }
+    .results-top { flex-direction: column; }
+    .nav-right { display: none; }
+    .nav-pipe, .nav-pagetitle { display: none; }
+    footer { padding: 22px 16px; }
+    .foot-links { flex-wrap: wrap; gap: 14px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <header>
-    <div class="logo-mark">CXI</div>
-    <div class="header-text">
-      <h1>Scheduling Assistant</h1>
-      <p>AroFlo Job Scheduler — Powered by AI</p>
+<div class="announce">
+  Internal tool &nbsp;·&nbsp; <b>CXI Scheduling Assistant</b> &nbsp;·&nbsp; Authorised team use only
+</div>
+
+<nav>
+  <div class="nav-brand">
+    <div class="logo-mark">
+      <!-- Simple CXI shield icon in navy box -->
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M11 2L4 5v6c0 4.1 2.97 7.93 7 8.93C15.03 18.93 18 15.1 18 11V5L11 2z" fill="#e8631a"/>
+        <text x="11" y="15" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="8" fill="white" letter-spacing="0.5">CXI</text>
+      </svg>
     </div>
-    <div class="badge">v1.0</div>
-  </header>
+    <div class="logo-text">
+      <span class="l1">CXI</span>
+      <span class="l2">Control by Integration</span>
+    </div>
+    <div class="nav-pipe"></div>
+    <span class="nav-pagetitle">Scheduling Assistant</span>
+  </div>
+  <div class="nav-right">
+    <a class="nav-phone" href="tel:1300798325">📞 1300 798 325</a>
+    <a class="nav-btn" href="https://cxi.net.au" target="_blank">cxi.net.au ↗</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">AroFlo Integration</div>
+    <h1 class="hero-h1">Job Scheduling Assistant</h1>
+    <p class="hero-p">Upload your AroFlo open task export and generate an optimised daily schedule — automatically matched to Karl, Josh and David by skills, location and priority.</p>
+  </div>
+</div>
+
+<div class="content">
 
   <!-- API Key -->
-  <div class="api-section">
-    <div class="section-label">Anthropic API Key</div>
-    <div class="api-row">
-      <input type="password" class="api-input" id="apiKey" placeholder="sk-ant-..." autocomplete="off" />
-      <button class="btn btn-save" onclick="saveKey()">Save Key</button>
-      <button class="btn btn-clear" onclick="clearKey()">Clear</button>
+  <div class="panel">
+    <div class="panel-head">Anthropic API Key</div>
+    <div class="row">
+      <input class="inp" type="password" id="apiKey" placeholder="sk-ant-api…" autocomplete="off" />
+      <button class="btn btn-primary" onclick="saveKey()">Save</button>
+      <button class="btn btn-outline" onclick="clearKey()">Clear</button>
     </div>
-    <div class="key-status missing" id="keyStatus">
-      <span class="dot"></span> No API key saved — enter your key above
+    <div class="key-note" id="keyNote">
+      <span class="dot"></span> No key saved — enter your Anthropic API key above
     </div>
   </div>
 
   <!-- Upload -->
-  <div class="upload-section">
-    <div class="section-label">AroFlo Task Export</div>
-    <div class="drop-zone" id="dropZone">
-      <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" onchange="handleFile(event)" />
-      <span class="drop-icon">📋</span>
-      <div class="drop-title">Drop your AroFlo export here</div>
-      <div class="drop-sub">Accepts CSV or Excel files (.csv, .xlsx, .xls)</div>
+  <div class="panel">
+    <div class="panel-head">AroFlo Task Export</div>
+    <div class="dropzone" id="dz">
+      <input type="file" id="fi" accept=".csv,.xlsx,.xls" onchange="onFile(event)" />
+      <span class="dz-icon">📋</span>
+      <div class="dz-title">Click to browse or drag your AroFlo export here</div>
+      <div class="dz-hint">Accepts .csv or .xlsx files exported from AroFlo open tasks</div>
     </div>
-    <div class="file-loaded" id="fileLoaded" style="display:none">
-      <span class="file-icon">✅</span>
-      <span class="file-name" id="fileName"></span>
-      <span class="file-size" id="fileSize"></span>
+    <div id="fileChip" style="display:none">
+      <div class="file-chip">
+        <span>✅</span>
+        <span class="chip-name" id="fName"></span>
+        <span class="chip-size" id="fSize"></span>
+      </div>
     </div>
     <div class="date-row">
-      <span class="date-label">Schedule date:</span>
-      <input type="date" class="date-input" id="schedDate" />
+      <label for="schedDate">Schedule date</label>
+      <input type="date" id="schedDate" />
     </div>
   </div>
 
-  <!-- Generate Button -->
-  <button class="btn-generate" id="generateBtn" onclick="generateSchedule()" disabled>
+  <button class="btn-generate" id="genBtn" onclick="generate()" disabled>
     Generate Schedule
   </button>
 
-  <!-- Status -->
-  <div class="status-bar" id="statusBar">
-    <span id="statusIcon">⚡</span>
-    <span id="statusText">Processing...</span>
-    <span class="thinking-dots" id="thinkingDots" style="display:none">
-      <span>.</span><span>.</span><span>.</span>
-    </span>
+  <div class="status-bar" id="sb">
+    <span id="sbIcon"></span>
+    <span id="sbText"></span>
   </div>
 
-  <!-- Results -->
   <div id="results">
-    <div class="results-header">
+    <div class="results-top">
       <div>
-        <div class="results-title">Schedule Generated</div>
-        <div class="results-meta" id="resultsMeta"></div>
+        <div class="results-h2">Schedule Ready</div>
+        <div class="results-meta" id="rMeta"></div>
       </div>
-      <button class="btn-copy-all" onclick="copyAll()">📋 Copy All Tables</button>
+      <button class="btn-copy-all" onclick="copyAll()">📋 Copy All</button>
     </div>
-    <div id="techCards"></div>
+    <div id="cards"></div>
   </div>
-
-  <footer>
-    CXI AroFlo Scheduling Assistant &nbsp;·&nbsp; Built for <span>CXI</span> &nbsp;·&nbsp; Karl · Josh · David
-  </footer>
 
 </div>
 
-<!-- Hidden raw output -->
-<div class="raw-output" id="rawOutput"></div>
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">CXI &nbsp;<span>Control by Integration</span></div>
+    <div class="foot-links">
+      <a href="https://cxi.net.au" target="_blank">Website</a>
+      <a href="https://cxi.net.au/contact" target="_blank">Contact</a>
+      <a href="https://cxi.net.au/support" target="_blank">Support</a>
+      <a href="https://cxi.net.au/careers" target="_blank">Careers</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    ACT Master License: 17502414 &nbsp;|&nbsp; NSW Master License: 104499 &nbsp;|&nbsp; ABN: 37 627 037 521 &nbsp;|&nbsp; Unit 6, 1 Kembla St Fyshwick ACT 2609
+  </div>
+</footer>
+
+<div style="display:none" id="rawOut"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+let fd = null;
 
-// ─── State ───────────────────────────────────────────────────────────────────
-let fileData = null;
-let fileName = '';
-
-// ─── On Load ─────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  const saved = sessionStorage.getItem('cxi_api_key');
-  if (saved) {
-    document.getElementById('apiKey').value = saved;
-    showKeyStatus(true);
-  }
-  // Default date to today
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('schedDate').value = today;
-
-  checkReady();
-
-  // Drag-drop
-  const dz = document.getElementById('dropZone');
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault();
-    dz.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) processFile(file);
-  });
+  const k = sessionStorage.getItem('cxi_k');
+  if (k) { document.getElementById('apiKey').value = k; setKeyOk(true); }
+  document.getElementById('schedDate').value = new Date().toISOString().split('T')[0];
+  chkBtn();
+  const dz = document.getElementById('dz');
+  dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('over'); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
 });
 
-// ─── API Key ─────────────────────────────────────────────────────────────────
 function saveKey() {
-  const key = document.getElementById('apiKey').value.trim();
-  if (!key.startsWith('sk-ant-')) {
-    alert('That doesn\'t look like a valid Anthropic API key. It should start with sk-ant-');
-    return;
-  }
-  sessionStorage.setItem('cxi_api_key', key);
-  showKeyStatus(true);
-  checkReady();
+  const v = document.getElementById('apiKey').value.trim();
+  if (!v.startsWith('sk-ant-')) { alert('Key should start with sk-ant-'); return; }
+  sessionStorage.setItem('cxi_k', v); setKeyOk(true); chkBtn();
 }
-
 function clearKey() {
-  sessionStorage.removeItem('cxi_api_key');
-  document.getElementById('apiKey').value = '';
-  showKeyStatus(false);
-  checkReady();
+  sessionStorage.removeItem('cxi_k'); document.getElementById('apiKey').value = ''; setKeyOk(false); chkBtn();
+}
+function setKeyOk(ok) {
+  const el = document.getElementById('keyNote');
+  el.className = 'key-note' + (ok ? ' ok' : '');
+  el.innerHTML = `<span class="dot"></span> ${ok ? 'API key saved for this session' : 'No key saved — enter your Anthropic API key above'}`;
 }
 
-function showKeyStatus(ok) {
-  const el = document.getElementById('keyStatus');
-  if (ok) {
-    el.className = 'key-status ok';
-    el.innerHTML = '<span class="dot"></span> API key saved for this session';
+function onFile(e) { if (e.target.files[0]) loadFile(e.target.files[0]); }
+function loadFile(f) {
+  const sz = f.size < 1024 ? f.size+' B' : (f.size/1024).toFixed(1)+' KB';
+  const r = new FileReader();
+  if (/\.csv$/i.test(f.name)) {
+    r.onload = e => { fd = e.target.result; showChip(f.name, sz); };
+    r.readAsText(f);
   } else {
-    el.className = 'key-status missing';
-    el.innerHTML = '<span class="dot"></span> No API key saved — enter your key above';
+    r.onload = e => {
+      try { const wb = XLSX.read(e.target.result,{type:'array'}); fd = XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]]); showChip(f.name, sz); }
+      catch { alert('Could not read file. Try exporting as CSV from AroFlo.'); }
+    };
+    r.readAsArrayBuffer(f);
   }
 }
-
-// ─── File Handling ────────────────────────────────────────────────────────────
-function handleFile(event) {
-  const file = event.target.files[0];
-  if (file) processFile(file);
+function showChip(n, s) {
+  document.getElementById('fileChip').style.display = 'block';
+  document.getElementById('fName').textContent = n;
+  document.getElementById('fSize').textContent = s;
+  chkBtn();
+}
+function chkBtn() {
+  document.getElementById('genBtn').disabled = !(sessionStorage.getItem('cxi_k') && fd);
 }
 
-function processFile(file) {
-  fileName = file.name;
-  const size = file.size < 1024 ? file.size + ' B' : (file.size / 1024).toFixed(1) + ' KB';
+async function generate() {
+  const key = sessionStorage.getItem('cxi_k');
+  const raw = document.getElementById('schedDate').value;
+  const dl  = raw ? new Date(raw+'T00:00:00').toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : 'Today';
 
-  const reader = new FileReader();
+  setSb('thinking', null, 'Analysing jobs and building optimised schedule…');
+  document.getElementById('genBtn').disabled = true;
+  document.getElementById('results').classList.remove('show');
 
-  if (file.name.endsWith('.csv')) {
-    reader.onload = e => {
-      fileData = e.target.result;
-      showFileLoaded(file.name, size);
-    };
-    reader.readAsText(file);
-  } else {
-    reader.onload = e => {
-      try {
-        const wb = XLSX.read(e.target.result, { type: 'array' });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        fileData = XLSX.utils.sheet_to_csv(ws);
-        showFileLoaded(file.name, size);
-      } catch(err) {
-        alert('Could not read that file. Please export from AroFlo as CSV or Excel.');
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  }
-}
+  const SYS = `You are the CXI AroFlo Scheduling Assistant for Control by Integration, a Canberra electronic security company. Read the open task export and assign each job to the best technician using the rules below.
 
-function showFileLoaded(name, size) {
-  document.getElementById('fileLoaded').style.display = 'flex';
-  document.getElementById('fileName').textContent = name;
-  document.getElementById('fileSize').textContent = size;
-  checkReady();
-}
+TECHNICIAN PROFILES
+═══════════════════
 
-// ─── Button State ─────────────────────────────────────────────────────────────
-function checkReady() {
-  const hasKey = !!sessionStorage.getItem('cxi_api_key');
-  const hasFile = !!fileData;
-  document.getElementById('generateBtn').disabled = !(hasKey && hasFile);
-}
+DAVID — Senior Technician (highest experience)
+• Knows almost everything — first choice for all complex, specialist or high-stakes jobs
+• Skills: Inner Range Inception, Inner Range Integriti (advanced), Intercoms (all), CCTV (all), NX Witness, Protégé WX, QPRC / Queanbeyan Palerang Regional Council sites, complex troubleshooting
+• Certifications: Integriti Advanced, NCH (North Canberra Hospital), TCH (The Canberra Hospital)
+• Zone preference: ACT North Side  |  Hours: 08:00–16:30
 
-// ─── Generate Schedule ────────────────────────────────────────────────────────
-async function generateSchedule() {
-  const key = sessionStorage.getItem('cxi_api_key');
-  const schedDate = document.getElementById('schedDate').value;
-  const dateLabel = schedDate ? new Date(schedDate + 'T00:00:00').toLocaleDateString('en-AU', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) : 'Today';
+KARL — Intermediate Technician
+• Good with most things — suitable for standard and moderately complex jobs
+• Skills: Inner Range Inception, Inner Range Integriti, Intercoms (all), CCTV (all), NX Witness, Protégé WX, Protégé GX, standard troubleshooting
+• Certifications: Integriti Base Level
+• Zone: ACT  |  Hours: 08:00–16:30
 
-  setStatus('thinking', '⚡', 'Sending jobs to AI for analysis');
-  document.getElementById('generateBtn').disabled = true;
-  document.getElementById('results').classList.remove('visible');
+JOSH — Junior Technician (least experienced)
+• Basic tasks only — do NOT assign complex or specialist work to Josh
+• Skills: Inner Range Inception, Hikvision CCTV (basic), basic CCTV, NX Witness (basic), cabling, installation, basic troubleshooting
+• Certifications: Inner Range Inception, Protégé WX, NCH and TCH site access
+• Zone: ACT  |  Hours: 08:00–16:30
 
-  const systemPrompt = `You are the CXI AroFlo Scheduling Assistant. Your job is to read a list of open tasks exported from AroFlo and assign them to technicians based on strict rules.
+ASSIGNMENT RULES
+════════════════
+• Integriti jobs → David or Karl only (David preferred for advanced)
+• Advanced CCTV → David or Karl only
+• Protégé GX → Karl only
+• QPRC / Queanbeyan Palerang Regional Council → David only
+• NCH (North Canberra Hospital) → David or Josh only
+• TCH (The Canberra Hospital) → David or Josh only
+• Intercoms → David or Karl only (Josh not qualified)
+• Complex troubleshooting → David first, Karl second, never Josh
+• Basic cabling / installation → any tech including Josh
+• Basic CCTV footage review → any tech including Josh
+• Never assign a job above a tech's experience level
+• If no qualified tech available → Unassigned with reason
 
-TECHNICIAN PROFILES:
+EXPERIENCE MATCHING
+═══════════════════
+• David: complex, multi-system, specialist, senior troubleshooting
+• Karl: standard installs, single systems, intermediate troubleshooting
+• Josh: basic tasks, cabling, simple installs only
 
-Karl:
-- Skills: Inner Range Inception, Inner Range Integriti, Intercoms (All), Troubleshooting service work, CCTV (all), NX Witness, Protégé WX, Protégé GX
-- Certifications: Inner Range Integriti Base level
-- Zone: ACT
-- Hours: 08:00–16:30
+GEOGRAPHIC RULES
+════════════════
+• David finishes on ACT North Side where possible
+• Group each tech's jobs in geographic clusters (5–10 km radius)
+• Sequence to minimise travel and backtracking
+• SLA / Urgent jobs override geographic preference
 
-Josh:
-- Skills: Inner Range Inception, Hikvision CCTV, CCTV (Some), NX Witness, Troubleshooting Service work, Cabling and installation, NCH and TCH (North Canberra Hospital and The Canberra Hospital)
-- Certifications: Inner Range Inception, Protégé WX
-- Zone: ACT
-- Hours: 08:00–16:30
+WORKLOAD
+════════
+• Max 6 jobs per tech per day
+• Max 30 min travel between consecutive jobs
+• Overflow to Unassigned if workload exceeded
 
-David:
-- Skills: Inner Range Inception, Inner Range Integriti, Intercoms (All), Troubleshooting service work, CCTV (all), NX Witness, Protégé WX, QPRC Sites (all Queanbeyan Palerang Regional Council work)
-- Certifications: Inner Range Integriti advanced, NCH and TCH (North Canberra Hospital and The Canberra Hospital)
-- Zone: ACT (prefers North side)
-- Hours: 08:00–16:30
+PRIORITY ORDER: SLA → Urgent → High → Normal
+SLA and Urgent always scheduled first.
 
-SKILL ASSIGNMENT RULES:
-- Integriti jobs → ONLY Karl or David
-- Advanced CCTV jobs → ONLY Karl or David
-- Electrical tasks → ONLY Kristian (if Kristian is unavailable, add to Unassigned)
-- NCH or TCH jobs → ONLY David or Josh
-- Protégé GX jobs → ONLY Karl
-- Access control jobs → techs with EAC competency only
-- CCTV jobs → techs with IP networking + camera config skills
-- Intercom jobs → techs with cabling + handset experience
-- CCTV footage review → basic CCTV skills sufficient
+OUTPUT: Reply with raw JSON only. No markdown, no explanation.
 
-GEOGRAPHIC RULES:
-- Keep North-side techs north for end-of-day jobs (David prefers north)
-- Keep South-side techs south for end-of-day jobs
-- Minimise cross-city travel
-- Group jobs by suburb or radius (try to keep within 5–10 km)
-- Prioritise shortest travel path, avoid backtracking
-
-WORKLOAD RULES:
-- Max 6 jobs per technician per day
-- Max 30 minutes travel time per technician
-- Try to keep job sequencing within 5–10 km radius
-
-PRIORITY RULES:
-- SLA or urgent tasks override geographic grouping
-- Prevent low-priority tasks from blocking high-priority availability
-
-OUTPUT FORMAT — You MUST respond with a valid JSON object only. No explanation, no markdown, no extra text. Just the JSON.
-
-The JSON must follow this exact structure:
 {
   "scheduleDate": "string",
-  "summary": "brief one-line summary of the day",
+  "summary": "brief one-line summary",
   "technicians": [
     {
-      "name": "Karl",
+      "name": "David",
+      "role": "Senior Technician",
       "jobs": [
         {
           "order": 1,
@@ -858,7 +838,7 @@ The JSON must follow this exact structure:
           "client": "string",
           "location": "string",
           "description": "string",
-          "priority": "Urgent|High|Normal|SLA",
+          "priority": "Urgent|High|SLA|Normal",
           "estimatedDuration": "string",
           "notes": "string"
         }
@@ -866,26 +846,13 @@ The JSON must follow this exact structure:
     }
   ],
   "unassigned": [
-    {
-      "taskId": "string",
-      "client": "string",
-      "location": "string",
-      "description": "string",
-      "reason": "string"
-    }
+    { "taskId": "string", "client": "string", "location": "string", "description": "string", "reason": "string" }
   ]
 }
-
-Only include technicians who have jobs assigned. Always include unassigned array (empty if none).`;
-
-  const userMessage = `Please schedule the following AroFlo open tasks for ${dateLabel}. Apply all skill, geographic, workload and priority rules.
-
-Here is the task data:
-
-${fileData}`;
+Only include technicians with at least one job. Always include unassigned array (empty if none).`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -896,226 +863,160 @@ ${fileData}`;
       body: JSON.stringify({
         model: 'claude-opus-4-5-20251101',
         max_tokens: 4096,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMessage }]
+        system: SYS,
+        messages: [{ role: 'user', content: `Schedule these AroFlo tasks for ${dl}. Apply all rules.\n\n${fd}` }]
       })
     });
 
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || 'API request failed');
-    }
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message||'API error'); }
+    const data = await res.json();
+    let sched;
+    try { sched = JSON.parse(data.content[0].text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim()); }
+    catch { throw new Error('Could not parse response — please try again.'); }
 
-    const data = await response.json();
-    const rawText = data.content[0].text;
-
-    // Parse JSON from response
-    let schedule;
-    try {
-      // Strip any possible markdown fences
-      const clean = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      schedule = JSON.parse(clean);
-    } catch(e) {
-      throw new Error('Could not parse the AI response. Please try again.');
-    }
-
-    setStatus('done', '✅', `Schedule generated — ${dateLabel}`);
-    renderResults(schedule, dateLabel);
-
+    setSb('done', '✅', `Schedule generated for ${dl}`);
+    render(sched, dl);
   } catch(err) {
-    setStatus('error', '❌', 'Error: ' + err.message);
-    document.getElementById('generateBtn').disabled = false;
+    setSb('error', '❌', 'Error: '+err.message);
+    document.getElementById('genBtn').disabled = false;
   }
 }
 
-// ─── Status Bar ───────────────────────────────────────────────────────────────
-function setStatus(type, icon, text) {
-  const bar = document.getElementById('statusBar');
-  bar.className = 'status-bar visible ' + type;
-  document.getElementById('statusIcon').textContent = icon;
-  document.getElementById('statusText').textContent = text;
-  document.getElementById('thinkingDots').style.display = type === 'thinking' ? 'inline' : 'none';
+function setSb(type, icon, text) {
+  const sb = document.getElementById('sb');
+  sb.className = 'status-bar show '+type;
+  document.getElementById('sbIcon').innerHTML = type==='thinking' ? '<div class="spin"></div>' : (icon||'');
+  document.getElementById('sbText').textContent = text;
 }
 
-// ─── Render Results ───────────────────────────────────────────────────────────
-function renderResults(schedule, dateLabel) {
-  const results = document.getElementById('results');
-  const cards = document.getElementById('techCards');
-  const meta = document.getElementById('resultsMeta');
+function render(s, dl) {
+  const total = (s.technicians||[]).reduce((a,t)=>a+t.jobs.length,0);
+  const unlen = (s.unassigned||[]).length;
+  document.getElementById('rMeta').textContent = `${dl}  ·  ${total} job${total!==1?'s':''} assigned  ·  ${unlen} unassigned`;
 
-  const totalJobs = (schedule.technicians || []).reduce((a,t) => a + t.jobs.length, 0);
-  const unassignedCount = (schedule.unassigned || []).length;
-  meta.textContent = `${dateLabel} · ${totalJobs} jobs assigned · ${unassignedCount} unassigned`;
+  const wrap = document.getElementById('cards');
+  wrap.innerHTML = '';
 
-  cards.innerHTML = '';
+  const TM = {
+    David: {cls:'david', av:'av-david', role:'Senior Technician'},
+    Karl:  {cls:'karl',  av:'av-karl',  role:'Intermediate Technician'},
+    Josh:  {cls:'josh',  av:'av-josh',  role:'Junior Technician'}
+  };
 
-  // Tech cards
-  const techColors = { Karl: 'karl', Josh: 'josh', David: 'david' };
-
-  (schedule.technicians || []).forEach(tech => {
-    const initial = tech.name.charAt(0).toUpperCase();
-    const colorClass = 'avatar-' + (techColors[tech.name] || 'karl');
-
-    const rows = tech.jobs.map(job => {
-      const priorityClass = {
-        'Urgent': 'priority-urgent',
-        'High': 'priority-high',
-        'SLA': 'priority-sla',
-        'Normal': 'priority-normal'
-      }[job.priority] || 'priority-normal';
-
+  (s.technicians||[]).forEach(tech => {
+    const m = TM[tech.name]||{cls:'karl',av:'av-karl',role:''};
+    const rows = tech.jobs.map(j => {
+      const pc = {Urgent:'p-urgent',High:'p-high',SLA:'p-sla',Normal:'p-normal'}[j.priority]||'p-normal';
       return `<tr>
-        <td><span class="order-badge">${job.order}</span></td>
-        <td>
-          <div class="task-title">${escHtml(job.taskId || '')}</div>
-          <div class="task-sub">${escHtml(job.estimatedDuration || '')}</div>
-        </td>
-        <td>
-          <div class="task-title">${escHtml(job.client || '')}</div>
-          <div class="task-sub">${escHtml(job.location || '')}</div>
-        </td>
-        <td>${escHtml(job.description || '')}</td>
-        <td><span class="priority-badge ${priorityClass}">${escHtml(job.priority || 'Normal')}</span></td>
-        <td class="task-sub">${escHtml(job.notes || '—')}</td>
+        <td><span class="seq">${j.order}</span></td>
+        <td><div class="cp">${x(j.taskId)}</div><div class="cs">${x(j.estimatedDuration)}</div></td>
+        <td><div class="cp">${x(j.client)}</div><div class="cs">${x(j.location)}</div></td>
+        <td>${x(j.description)}</td>
+        <td><span class="pill ${pc}">${x(j.priority||'Normal')}</span></td>
+        <td class="cs">${x(j.notes||'—')}</td>
       </tr>`;
     }).join('');
 
-    const card = document.createElement('div');
-    card.className = 'tech-card';
-    card.innerHTML = `
-      <div class="tech-header">
-        <div class="tech-avatar ${colorClass}">${initial}</div>
-        <div>
-          <div class="tech-name">${escHtml(tech.name)}</div>
-          <div class="tech-job-count">${tech.jobs.length} job${tech.jobs.length !== 1 ? 's' : ''} assigned</div>
+    const el = document.createElement('div');
+    el.className = 'scard';
+    el.innerHTML = `
+      <div class="scard-head ${m.cls}">
+        <div class="av ${m.av}">${tech.name.charAt(0)}</div>
+        <div class="av-meta">
+          <div class="av-name">${x(tech.name)}</div>
+          <div class="av-role">${x(tech.role||m.role)}</div>
         </div>
-        <button class="btn-copy-tech" onclick="copyTechTable('${escHtml(tech.name)}')">📋 Copy Table</button>
+        <div class="job-count">${tech.jobs.length} job${tech.jobs.length!==1?'s':''}</div>
+        <button class="btn-cp" onclick="copyCard('${x(tech.name)}')">📋 Copy</button>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>#</th><th>Task ID</th><th>Client / Location</th>
-            <th>Description</th><th>Priority</th><th>Notes</th>
-          </tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>`;
-    cards.appendChild(card);
+      <div class="tscroll"><table>
+        <thead><tr><th>#</th><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Priority</th><th>Notes</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+    wrap.appendChild(el);
   });
 
-  // Unassigned card
-  if (schedule.unassigned && schedule.unassigned.length > 0) {
-    const rows = schedule.unassigned.map(job => `<tr>
-      <td>
-        <div class="task-title">${escHtml(job.taskId || '')}</div>
-      </td>
-      <td>
-        <div class="task-title">${escHtml(job.client || '')}</div>
-        <div class="task-sub">${escHtml(job.location || '')}</div>
-      </td>
-      <td>${escHtml(job.description || '')}</td>
-      <td style="color:var(--warn)">${escHtml(job.reason || '')}</td>
+  if (s.unassigned?.length) {
+    const rows = s.unassigned.map(j=>`<tr>
+      <td><div class="cp">${x(j.taskId)}</div></td>
+      <td><div class="cp">${x(j.client)}</div><div class="cs">${x(j.location)}</div></td>
+      <td>${x(j.description)}</td>
+      <td style="color:var(--orange);font-size:13px">${x(j.reason)}</td>
     </tr>`).join('');
-
-    const card = document.createElement('div');
-    card.className = 'tech-card';
-    card.innerHTML = `
-      <div class="tech-header">
-        <div class="tech-avatar avatar-unassigned">!</div>
-        <div>
-          <div class="tech-name">Unassigned Jobs</div>
-          <div class="tech-job-count">${schedule.unassigned.length} job${schedule.unassigned.length !== 1 ? 's' : ''} could not be assigned</div>
+    const el = document.createElement('div');
+    el.className = 'scard';
+    el.innerHTML = `
+      <div class="scard-head unassigned">
+        <div class="av av-unassigned">!</div>
+        <div class="av-meta">
+          <div class="av-name">Unassigned Jobs</div>
+          <div class="av-role">Could not be scheduled</div>
         </div>
-        <button class="btn-copy-tech" onclick="copyTechTable('Unassigned')">📋 Copy Table</button>
+        <div class="job-count">${s.unassigned.length} job${s.unassigned.length!==1?'s':''}</div>
+        <button class="btn-cp" onclick="copyCard('Unassigned')">📋 Copy</button>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Reason Unassigned</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>`;
-    cards.appendChild(card);
+      <div class="tscroll"><table>
+        <thead><tr><th>Task ID</th><th>Client / Location</th><th>Description</th><th>Reason Unassigned</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+    wrap.appendChild(el);
   }
 
-  // Store raw CSV-style for copy
-  storeRawOutput(schedule, dateLabel);
-
-  results.classList.add('visible');
-  document.getElementById('generateBtn').disabled = false;
-  document.getElementById('generateBtn').textContent = '↺ Generate New Schedule';
-  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  buildRaw(s, dl);
+  document.getElementById('results').classList.add('show');
+  document.getElementById('genBtn').disabled = false;
+  document.getElementById('genBtn').innerHTML = '↺ &nbsp;Generate New Schedule';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ─── Raw Output for Copying ───────────────────────────────────────────────────
-function storeRawOutput(schedule, dateLabel) {
-  let text = `CXI SCHEDULE — ${dateLabel}\n${'='.repeat(60)}\n\n`;
-
-  (schedule.technicians || []).forEach(tech => {
-    text += `TECHNICIAN: ${tech.name.toUpperCase()}\n${'-'.repeat(40)}\n`;
-    text += `#\tTask ID\tClient\tLocation\tDescription\tPriority\tNotes\n`;
-    tech.jobs.forEach(job => {
-      text += `${job.order}\t${job.taskId||''}\t${job.client||''}\t${job.location||''}\t${job.description||''}\t${job.priority||''}\t${job.notes||''}\n`;
-    });
-    text += '\n';
+function buildRaw(s, dl) {
+  let t = `CXI SCHEDULE — ${dl}\n${'═'.repeat(60)}\n\n`;
+  (s.technicians||[]).forEach(tech => {
+    t += `${tech.name.toUpperCase()} — ${tech.role||''}\n${'─'.repeat(40)}\n`;
+    t += `#\tTask ID\tClient\tLocation\tDescription\tPriority\tNotes\n`;
+    tech.jobs.forEach(j => t += `${j.order}\t${j.taskId||''}\t${j.client||''}\t${j.location||''}\t${j.description||''}\t${j.priority||''}\t${j.notes||''}\n`);
+    t += '\n';
   });
-
-  if (schedule.unassigned && schedule.unassigned.length > 0) {
-    text += `UNASSIGNED JOBS\n${'-'.repeat(40)}\n`;
-    text += `Task ID\tClient\tLocation\tDescription\tReason\n`;
-    schedule.unassigned.forEach(job => {
-      text += `${job.taskId||''}\t${job.client||''}\t${job.location||''}\t${job.description||''}\t${job.reason||''}\n`;
-    });
+  if (s.unassigned?.length) {
+    t += `UNASSIGNED\n${'─'.repeat(40)}\n`;
+    t += `Task ID\tClient\tLocation\tDescription\tReason\n`;
+    s.unassigned.forEach(j => t += `${j.taskId||''}\t${j.client||''}\t${j.location||''}\t${j.description||''}\t${j.reason||''}\n`);
   }
-
-  document.getElementById('rawOutput').textContent = text;
+  document.getElementById('rawOut').textContent = t;
 }
 
 function copyAll() {
-  const text = document.getElementById('rawOutput').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.btn-copy-all');
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy All Tables', 2000);
+  navigator.clipboard.writeText(document.getElementById('rawOut').textContent).then(() => {
+    const b = document.querySelector('.btn-copy-all');
+    b.textContent = '✅ Copied!';
+    setTimeout(()=>b.textContent='📋 Copy All',2000);
   });
 }
 
-function copyTechTable(techName) {
-  const raw = document.getElementById('rawOutput').textContent;
-  // Extract just that technician's section
-  const lines = raw.split('\n');
-  let capture = false;
-  let section = [];
-
-  for (const line of lines) {
-    if (line.includes(`TECHNICIAN: ${techName.toUpperCase()}`) || line.includes(`UNASSIGNED JOBS`) && techName === 'Unassigned') {
-      capture = true;
-    }
-    if (capture) {
-      if (line.startsWith('TECHNICIAN:') && !line.includes(techName.toUpperCase()) && section.length > 0) break;
-      section.push(line);
+function copyCard(name) {
+  const lines = document.getElementById('rawOut').textContent.split('\n');
+  const others = ['DAVID','KARL','JOSH','UNASSIGNED'].filter(n=>n!==name.toUpperCase());
+  let out=[], on=false;
+  for (const l of lines) {
+    if (l.startsWith(name.toUpperCase())) on=true;
+    if (on) {
+      if (others.some(n=>l.startsWith(n)) && out.length>0) break;
+      if (l.startsWith('═') && out.length>0) break;
+      out.push(l);
     }
   }
-
-  navigator.clipboard.writeText(section.join('\n')).then(() => {
-    // Visual feedback
-    const btns = document.querySelectorAll('.btn-copy-tech');
-    btns.forEach(btn => {
-      if (btn.getAttribute('onclick').includes(techName)) {
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => btn.textContent = '📋 Copy Table', 2000);
+  navigator.clipboard.writeText(out.join('\n')).then(() => {
+    document.querySelectorAll('.btn-cp').forEach(b => {
+      if (b.getAttribute('onclick')?.includes(name)) {
+        b.textContent='✅ Copied!'; setTimeout(()=>b.textContent='📋 Copy',2000);
       }
     });
   });
 }
 
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
+function x(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 </script>
 </body>
 </html>
