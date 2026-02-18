@@ -800,6 +800,16 @@ JOSH — Junior Technician (EASY level)
 • Special access: NCH (North Canberra Hospital), TCH (The Canberra Hospital)
 • Zone: ACT  |  Hours: 08:00–16:30
 
+NAMED TECHNICIAN OVERRIDE (HIGHEST PRIORITY RULE)
+══════════════════════════════════════════════════
+Before applying any other rule, check the tags column for a technician's name:
+
+• If the tags field contains "David", "Karl", or "Josh" (case-insensitive) → assign that job to that technician, no exceptions
+• This overrides ALL other rules: skill level tags, specialist site rules, geographic rules, and workload limits
+• If the named technician is at the 6-job maximum, still assign the job and note it as overtime/overload in the notes field — do NOT reassign to another tech
+• A tag can contain both a name and a skill tag (e.g. "David; Advanced" or "Karl; Easy") — honour the name assignment and use the skill tag for reference only
+• Add a note on the job: "Assigned to [name] by name tag override"
+
 TAG-BASED ASSIGNMENT (PRIMARY RULE)
 ════════════════════════════════════
 Each task has a "tags" column. The tag determines which techs are qualified:
@@ -850,7 +860,8 @@ UNASSIGNED REASONS - Be specific:
 • "Missing skill level tag - please add Easy, Intermediate or Advanced tag in AroFlo"
 • "Requires Advanced level - only David qualified but workload full"
 • "Integriti work requires David or Karl but both at capacity"
-• etc.
+• Never use technician unavailability as a reason — all three techs are always available
+• Note: Named technician overrides are NEVER unassigned — always assign even if over the job limit
 
 OUTPUT: Reply with raw JSON only. No markdown, no explanation.
 
