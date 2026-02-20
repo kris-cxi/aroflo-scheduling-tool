@@ -800,9 +800,19 @@ JOSH — Junior Technician (EASY level)
 • Special access: NCH (North Canberra Hospital), TCH (The Canberra Hospital)
 • Zone: ACT  |  Hours: 08:00–16:30
 
-NAMED TECHNICIAN OVERRIDE (HIGHEST PRIORITY RULE)
-══════════════════════════════════════════════════
-Before applying any other rule, check the tags column for a technician's name:
+ASSIGNED TO COLUMN OVERRIDE (HIGHEST PRIORITY RULE)
+════════════════════════════════════════════════════
+Before applying any other rule, check the "Assigned To" column:
+
+• If the "Assigned To" column contains "David", "Karl", or "Josh" (case-insensitive, partial match is fine e.g. "David Smith") → assign that job to that technician, no exceptions
+• This overrides ALL other rules: skill level tags, specialist site rules, and workload limits
+• Geographic scheduling still applies — sequence the job into the technician's route in the optimal geographic order
+• If the named technician is at the 6-job maximum, still assign the job and note it as overtime/overload in the notes field — do NOT reassign to another tech
+• Add a note on the job: "Assigned to [name] via Assigned To column"
+
+NAMED TECHNICIAN TAG OVERRIDE (SECOND PRIORITY RULE)
+═════════════════════════════════════════════════════
+If no match in the "Assigned To" column, check the tags column for a technician's name:
 
 • If the tags field contains "David", "Karl", or "Josh" (case-insensitive) → assign that job to that technician, no exceptions
 • This overrides ALL other rules: skill level tags, specialist site rules, geographic rules, and workload limits
